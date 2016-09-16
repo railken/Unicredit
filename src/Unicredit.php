@@ -84,10 +84,11 @@ class Unicredit{
 		$init -> trType = "AUTH";
 		$init -> amount = $amount * 100;
 
-		if(!$init -> execute()) 
-			throw \Exception(urlencode($init -> errorDesc));
-		
 		$this -> init = $init;
+		
+		if(!$init -> execute()) 
+			return false;
+		
 		return $init -> paymentID;
 	}
 
@@ -99,6 +100,15 @@ class Unicredit{
 	public function getUrl(){
 
 		return $this -> init -> redirectURL;
+	}
+
+	/**
+	 * Get Last error
+	 *
+	 * @return string
+	 */
+	public function getLastError(){
+		return $this -> init -> errorDesc;
 	}
 }
 

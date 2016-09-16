@@ -7,7 +7,6 @@ Unicredit library for online payments
 use EchoWine\Unicredit\Unicredit;
 
 # Initialize with configuration
-
 Unicredit::ini([
     'url' => "https://testuni.netsw.it/UNI_CG_SERVICES/services/PaymentInitGatewayPort?wsdl",
     'timeout' => 15000,
@@ -22,8 +21,8 @@ $uc = new Unicredit();
 
 # Set redirect url
 $uc -> urls([
-    'success' => 'success.php',
-    'error' => 'error.php'
+    'success' => 'http://localhost/success.php',
+    'error' => 'http://localhost/error.php'
 ]);
 
 # Create a random ID for an order
@@ -33,8 +32,16 @@ $order_id = md5(time());
 # Return the Payment ID
 $id = $uc -> payment($order_id,'email@customer.com',10);
 
-# Redirect to the checkout
-$uc -> getUrl();
+if($id){
+    
+    # Redirect to the checkout
+    $uc -> getUrl();
+
+}else{
+	
+	# Get error
+    $error = $uc -> getLastError();
+}
 
 ?>
 ```
