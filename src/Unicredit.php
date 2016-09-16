@@ -16,6 +16,20 @@ class Unicredit{
 	public static $cfg;
 
 	/**
+	 * Url to redirect in case of success
+	 *
+	 * @var string
+	 */
+	protected $success_url;
+	
+	/**
+	 * Url to redirect in case of error
+	 *
+	 * @var string
+	 */
+	protected $error_url;
+
+	/**
 	 * Initialize the configuration
 	 *
 	 * @param array $cfg
@@ -37,19 +51,34 @@ class Unicredit{
 		$init -> kSig = self::$cfg['api_key'];
 		$init -> currencyCode = self::$cfg['currency'];
 		$init -> langID =  self::$cfg['lang'];
-		$init -> notifyURL = $this -> getUrlDir()."/".self::$cfg['success_url'];
-		$init -> errorURL = $this -> getUrlDir()."/".self::$cfg['error_url'];
 
 		return $init;
 	}
 
-	public function getUrlDir(){
-		return 'http://' . $_SERVER['HTTP_HOST'] . dirname($_SERVER['REQUEST_URI']);
+	/**
+	 * Set urls
+	 *
+	 * @param Array $urls
+	 */
+	public function urls($urls){
+		$this -> success_url = $urls['success'];
+		$this -> error_url = $urls['error'];
 	}
 
+	/**
+	 * Make request payment
+	 *
+	 * @param mixed $id order
+	 * @param string $email customer
+	 * @param float $amount to charge
+	 *
+	 * @return mixed payment ID
+	 */
 	public function payment($id,$email,$amount){
 
 		$init = $this -> getInit();
+		$init -> notifyURL = $this -> success_url;
+		$init -> errorURL = $this -> error_url;
 		$init -> shopID = $id;
 		$init -> shopUserRef = $email;
 		$init -> trType = "AUTH";
@@ -62,6 +91,11 @@ class Unicredit{
 		return $init -> paymentID;
 	}
 
+	/** 
+	 * Get the url to checkout
+	 *
+	 * @return string
+	 */
 	public function getUrl(){
 
 		return $this -> init -> redirectURL;
