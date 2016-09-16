@@ -1,10 +1,17 @@
 # unicredit
 Unicredit library for online payments
 
+
+Namespace
+
 ```php
 <?php
-
 use EchoWine\Unicredit\Unicredit;
+```
+
+
+```php
+<?php
 
 # Initialize with configuration
 Unicredit::ini([
@@ -15,13 +22,20 @@ Unicredit::ini([
     'currency' => 'EUR',
     'lang' => 'IT'
 ]);
+```
+
+
+Checkout page
+
+```php
+<?php
 
 # Make a new instance
 $uc = new Unicredit();
 
 # Set redirect url
 $uc -> urls([
-    'success' => 'http://localhost/success.php',
+    'verify' => 'http://localhost/verify.php',
     'error' => 'http://localhost/error.php'
 ]);
 
@@ -30,10 +44,13 @@ $order_id = md5(time());
 
 # Make a request
 # Return the Payment ID
-$id = $uc -> payment($order_id,'email@customer.com',10);
+$transaction_id = $uc -> payment($order_id,'email@customer.com',10);
 
-if($id){
+if($transaction_id){
     
+    # IMPORTANT !!!    
+    # Save $order_id and $transaction_id in DB or Cookie in order to retrieve in the next page
+
     # Redirect to the checkout
     $uc -> getUrl();
 
@@ -43,5 +60,40 @@ if($id){
     $error = $uc -> getLastError();
 }
 
-?>
+```
+
+
+Verify page
+
+```php
+<?php
+
+# Retrieve $transaction_id and $order_id from DB/Cookie
+
+# Make a new instance
+$uc = new Unicredit();
+
+$check = $uc -> verify($order_id,$transaction_id);
+
+if($check){
+
+    $response = $uc -> getResponse();
+
+    if(empty($response -> error)){
+
+        # Success!!!
+        # Payments is now confirmed
+
+    }else{
+
+        # Some error
+    }
+
+
+}else{
+    
+    # Error: check failed
+}
+
+
 ```

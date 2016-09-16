@@ -4,6 +4,7 @@
 namespace EchoWine\Unicredit;
 
 use EchoWine\Unicredit\IGFS_CG_API\init\IgfsCgInit;
+use EchoWine\Unicredit\IGFS_CG_API\init\IgfsCgVerify;
 
 class Unicredit{
 
@@ -14,13 +15,13 @@ class Unicredit{
 	 * @var array
 	 */
 	public static $cfg;
-
+	
 	/**
-	 * Url to redirect in case of success
+	 * Url to redirect in case of error
 	 *
 	 * @var string
 	 */
-	protected $success_url;
+	protected $verify_url;
 	
 	/**
 	 * Url to redirect in case of error
@@ -36,6 +37,8 @@ class Unicredit{
 	 */
 	public static function ini($cfg){
 		self::$cfg = $cfg;
+		self::$cfg['timeout'] = 15000;
+
 	}
 
 	/**
@@ -45,14 +48,26 @@ class Unicredit{
 	 */
 	public function getInit(){
 		$init = new IgfsCgInit();
-		$init -> serverURL = self::$cfg['url'];
-		$init -> timeout = self::$cfg['timeout'];
-		$init -> tid = self::$cfg['terminal_id'];
-		$init -> kSig = self::$cfg['api_key'];
-		$init -> currencyCode = self::$cfg['currency'];
-		$init -> langID =  self::$cfg['lang'];
+		return $this -> getCG($init);
+	}
 
-		return $init;
+	/**
+	 * Get new instance request
+	 *
+	 * @return IgfsCgInit;
+	 */
+	public function getVerify(){
+		$verify = new IgfsCgVerify();
+		return $this -> getCG($verify);
+	}
+
+	public function getCG($obj){
+		$obj -> timeout = self::$cfg['timeout'];
+		$obj -> tid = self::$cfg['terminal_id'];
+		$obj -> kSig = self::$cfg['api_key'];
+		$obj -> currencyCode = self::$cfg['currency'];
+		$obj -> langID =  self::$cfg['lang'];
+		return $obj;
 	}
 
 	/**
@@ -61,8 +76,8 @@ class Unicredit{
 	 * @param Array $urls
 	 */
 	public function urls($urls){
-		$this -> success_url = $urls['success'];
-		$this -> error_url = $urls['error'];
+		$this -> verify_url = isset($urls['verify']) ? $urls['verify'] : null;
+		$this -> error_url = isset($urls['error']) ? $urls['error'] : null;
 	}
 
 	/**
@@ -77,14 +92,15 @@ class Unicredit{
 	public function payment($id,$email,$amount){
 
 		$init = $this -> getInit();
-		$init -> notifyURL = $this -> success_url;
+		$init -> serverURL = "https://testuni.netsw.it/UNI_CG_SERVICES/services/PaymentInitGatewayPort?wsdl";
+		$init -> notifyURL = $this -> verify_url;
 		$init -> errorURL = $this -> error_url;
 		$init -> shopID = $id;
 		$init -> shopUserRef = $email;
 		$init -> trType = "AUTH";
 		$init -> amount = $amount * 100;
 
-		$this -> init = $init;
+		$this -> response = $init;
 		
 		if(!$init -> execute()) 
 			return false;
@@ -92,6 +108,15 @@ class Unicredit{
 		return $init -> paymentID;
 	}
 
+	/**
+	 * Get response
+	 *
+	 * @return Response
+	 */
+	public function getResponse(){
+		return $this -> response;
+	}
+	
 	/** 
 	 * Get the url to checkout
 	 *
@@ -99,7 +124,7 @@ class Unicredit{
 	 */
 	public function getUrl(){
 
-		return $this -> init -> redirectURL;
+		return $this -> response -> redirectURL;
 	}
 
 	/**
@@ -108,7 +133,25 @@ class Unicredit{
 	 * @return string
 	 */
 	public function getLastError(){
-		return $this -> init -> errorDesc;
+		return $this -> response -> errorDesc;
+	}
+
+	/**
+	 * Verify if a payments was made
+	 *
+	 * @param string $transaction
+	 * @param string $order
+	 *
+	 * @return bool
+	 */
+	public function verify($order,$transaction){
+
+		$verify = $this -> getVerify();
+		$verify -> serverURL = "https://testuni.netsw.it/UNI_CG_SERVICES/services";
+		$verify -> shopID = $order;
+		$verify -> paymentID = $transaction;
+		$this -> response = $verify;
+		return $verify -> execute();
 	}
 }
 
