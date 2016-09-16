@@ -1,7 +1,7 @@
 <?php
 	
 
-namespace EchoWine\Unicredit\Api;
+namespace EchoWine\Unicredit;
 
 use EchoWine\Unicredit\IGFS_CG_API\init\IgfsCgInit;
 
@@ -62,12 +62,9 @@ class Unicredit{
 		return $init -> paymentID;
 	}
 
-	public function go(){
+	public function getUrl(){
 
-
-		header("location: ".$this -> init -> redirectURL);
-
-		return;
+		return $this -> init -> redirectURL;
 	}
 }
 

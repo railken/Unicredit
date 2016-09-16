@@ -1,6 +1,6 @@
 <?php
 
-namespace EchoWine\Unicredit\IGFS_CG_API;
+namespace EchoWine\Unicredit\IGFS_CG_API\init;
 
 class SelectorTerminalInfo {
 	

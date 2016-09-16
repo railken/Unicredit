@@ -4,6 +4,7 @@ namespace EchoWine\Unicredit\IGFS_CG_API;
 
 use EchoWine\Unicredit\IGFS_CG_API\IgfsUtils;
 use EchoWine\Unicredit\IGFS_CG_API\Exception;
+use SimpleXMLElement;
 
 abstract class BaseIgfsCg {
 	
@@ -91,6 +92,7 @@ abstract class BaseIgfsCg {
 	abstract protected function getFileName();
 	
 	protected function readFromJARFile($filename) {
+		$this -> installPath = dirname(__DIR__);
 		if ($this->installPath != NULL) {
 			if (substr($this->installPath, -1) == "/") {
 				return file_get_contents($this->installPath . $filename);
