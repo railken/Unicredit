@@ -3,7 +3,7 @@ Library to perform online payments with unicredit
 
 # Installation
 ```
-$ composer require monolog/monolog
+$ composer require echowine/unicredit
 ```
 
 # Basic configuration
