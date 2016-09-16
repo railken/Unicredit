@@ -1,21 +1,14 @@
 {
-    "repositories": [
-        {
-            "type": "package",
-            "package": {
-                "name": "echowine/unicredit",
-                "version": "dev-master",
-                "source": {
-                    "url": "git://github.com/echowine/unicredit.git",
-                    "type": "git",
-                    "reference": "master"
-                },
-                "autoload": {
-                    "psr-0" : {
-                        "EchoWine\\Unicredit" : "src/"
-                    }
-                }
-            }
+    "name": "echowine/unicredit",
+    "version": "master",
+    "source": {
+        "url": "git://github.com/echowine/unicredit.git",
+        "type": "git",
+        "reference": "master"
+    },
+    "autoload": {
+        "psr-0" : {
+            "EchoWine\\Unicredit" : "src/"
         }
-    ]
+    }
 }
