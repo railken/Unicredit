@@ -2,7 +2,7 @@
 Library to perform online payments with unicredit
 
 # Installation
-```php
+```
 $ composer require monolog/monolog
 ```
 
