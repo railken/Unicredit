@@ -1,57 +1,51 @@
 <?php
 
-namespace EchoWine\Unicredit\Api\IGFS_CG_API;
+namespace EchoWine\Unicredit\IGFS_CG_API;
 
-use EchoWine\Unicredit\Api\IGFS_CG_API\tran\BaseIgfsCgTran;
-use EchoWine\Unicredit\Api\IGFS_CG_API\Level3Info;
+use EchoWine\Unicredit\IGFS_CG_API\init\BaseIgfsCgInit;
+use EchoWine\Unicredit\IGFS_CG_API\init\InitTerminalInfo;
+use EchoWine\Unicredit\IGFS_CG_API\Level3Info;
+use EchoWine\Unicredit\IGFS_CG_API\MandateInfo;
 
-class IgfsCgAuth extends BaseIgfsCgTran {
+class IgfsCgInit extends BaseIgfsCgInit {
 
 	public $shopUserRef;
 	public $shopUserName;
 	public $shopUserAccount;
 	public $shopUserMobilePhone;
-	public $shopUserIP;
 	public $trType = "AUTH";
 	public $amount;
 	public $currencyCode;
 	public $langID = "IT";
+	public $notifyURL;
+	public $errorURL;
 	public $callbackURL;
-	public $pan;
+	public $addInfo1;
+	public $addInfo2;
+	public $addInfo3;
+	public $addInfo4;
+	public $addInfo5;
 	public $payInstrToken;
 	public $regenPayInstrToken;
 	public $keepOnRegenPayInstrToken;
 	public $payInstrTokenExpire;
 	public $payInstrTokenUsageLimit;
-	public $cvv2;
-	public $expireMonth;
-	public $expireYear;
 	public $accountName;
-	public $enrStatus;
-	public $authStatus;
-	public $cavv;
-	public $xid;
 	public $level3Info;
+	public $mandateInfo;
 	public $description;
 	public $recurrent;
 	public $paymentReason;
 	public $topUpID;
 	public $firstTopUp;
 	public $payInstrTokenAsTopUpID;
-	public $promoCode;
-	public $payPassData;
-	public $userAgent;
-	public $fingerPrint;
 	public $validityExpire;
+	public $minExpireMonth;
+	public $minExpireYear;
+	public $termInfo;
 
 	public $paymentID;
-	public $authCode;
-	public $brand;
-	public $maskedPan;
-	public $additionalFee;
-	public $status;
-	public $nssResult;
-	public $receiptPdf;
+	public $redirectURL;
 
 	function __construct() {
 		parent::__construct();
@@ -63,70 +57,60 @@ class IgfsCgAuth extends BaseIgfsCgTran {
 		$this->shopUserName = NULL;
 		$this->shopUserAccount = NULL;
 		$this->shopUserMobilePhone = NULL;
-		$this->shopUserIP = NULL;
 		$this->trType = "AUTH";
 		$this->amount = NULL;
 		$this->currencyCode = NULL;
 		$this->langID = "IT";
+		$this->notifyURL = NULL;
+		$this->errorURL = NULL;
 		$this->callbackURL = NULL;
-		$this->pan = NULL;
+		$this->addInfo1 = NULL;
+		$this->addInfo2 = NULL;
+		$this->addInfo3 = NULL;
+		$this->addInfo4 = NULL;
+		$this->addInfo5 = NULL;
 		$this->payInstrToken = NULL;
 		$this->regenPayInstrToken = NULL;
 		$this->keepOnRegenPayInstrToken = NULL;
 		$this->payInstrTokenExpire = NULL;
 		$this->payInstrTokenUsageLimit = NULL;
-		$this->cvv2 = NULL;
-		$this->expireMonth = NULL;
-		$this->expireYear = NULL;
 		$this->accountName = NULL;
-		$this->enrStatus = NULL;
-		$this->authStatus = NULL;
-		$this->cavv = NULL;
-		$this->xid = NULL;
 		$this->level3Info = NULL;
+		$this->mandateInfo = NULL;
 		$this->description = NULL;
 		$this->recurrent = NULL;
 		$this->paymentReason = NULL;
 		$this->topUpID = NULL;
 		$this->firstTopUp = NULL;
 		$this->payInstrTokenAsTopUpID = NULL;
-		$this->promoCode = NULL;
-		$this->payPassData = NULL;
-		$this->userAgent = NULL;
-		$this->fingerPrint = NULL;
 		$this->validityExpire = NULL;
+		$this->minExpireMonth = NULL;
+		$this->minExpireYear = NULL;
+		$this->termInfo = NULL;
 
 		$this->paymentID = NULL;
-		$this->authCode = NULL;
-		$this->brand = NULL;
-		$this->maskedPan = NULL;
-		$this->additionalFee = NULL;
-		$this->status = NULL;
-		$this->nssResult = NULL;
-		$this->receiptPdf = NULL;
+		$this->redirectURL = NULL;
 	}
 
 	protected function checkFields() {
 		parent::checkFields();
 		if ($this->trType == NULL)
 			throw new IgfsMissingParException("Missing trType");
-		if ($this->trType == "VERIFY") {}
-		else {
-			if ($this->amount == NULL)
-				throw new IgfsMissingParException("Missing amount");
-			if ($this->currencyCode == NULL)
-				throw new IgfsMissingParException("Missing currencyCode");
-		}
-		// Disabilitato per pagopoi
-		// if ($this->pan == NULL) {
-		//	if ($this->payInstrToken == NULL)
-		//		throw new IgfsMissingParException("Missing pan");
+		// if ($this->trType == "TOKENIZE") {}
+		// elseif ($this->trType == "DELETE") {}
+		// elseif ($this->trType == "VERIFY") {}
+		// else {
+		// if ($this->amount == NULL)
+		// throw new IgfsMissingParException("Missing amount");
+		// if ($this->currencyCode == NULL)
+		// throw new IgfsMissingParException("Missing currencyCode");
 		// }
-		if ($this->pan != NULL) {
-			// Se è stato impostato il pan verifico...
-			if ($this->pan == "")
-				throw new IgfsMissingParException("Missing pan");
-		}
+		if ($this->langID == NULL)
+			throw new IgfsMissingParException("Missing langID");
+		if ($this->notifyURL == NULL)
+			throw new IgfsMissingParException("Missing notifyURL");
+		if ($this->errorURL == NULL)
+			throw new IgfsMissingParException("Missing errorURL");
 		if ($this->payInstrToken != NULL) {
 			// Se è stato impostato il payInstrToken verifico...
 			if ($this->payInstrToken == "")
@@ -144,7 +128,10 @@ class IgfsCgAuth extends BaseIgfsCgTran {
 				$i++;
 			}
 		}
-			
+		if ($this->mandateInfo != NULL) {
+			if ($this->mandateInfo->mandateID == NULL)
+				throw new IgfsMissingParException("Missing mandateID");
+		}
 	}
 
 	protected function buildRequest() {
@@ -165,10 +152,6 @@ class IgfsCgAuth extends BaseIgfsCgTran {
 			$request = $this->replaceRequest($request, "{shopUserMobilePhone}", "<shopUserMobilePhone><![CDATA[" . $this->shopUserMobilePhone . "]]></shopUserMobilePhone>");
 		else
 			$request = $this->replaceRequest($request, "{shopUserMobilePhone}", "");
-		if ($this->shopUserIP != NULL)
-			$request = $this->replaceRequest($request, "{shopUserIP}", "<shopUserIP><![CDATA[" . $this->shopUserIP . "]]></shopUserIP>");
-		else
-			$request = $this->replaceRequest($request, "{shopUserIP}", "");
 
 		$request = $this->replaceRequest($request, "{trType}", $this->trType);
 		if ($this->amount != NULL)
@@ -179,21 +162,36 @@ class IgfsCgAuth extends BaseIgfsCgTran {
 			$request = $this->replaceRequest($request, "{currencyCode}", "<currencyCode><![CDATA[" . $this->currencyCode . "]]></currencyCode>");
 		else
 			$request = $this->replaceRequest($request, "{currencyCode}", "");
-		if ($this->langID != NULL)
-			$request = $this->replaceRequest($request, "{langID}", "<langID><![CDATA[" . $this->langID . "]]></langID>");
-		else
-			$request = $this->replaceRequest($request, "{langID}", "");
 
+		$request = $this->replaceRequest($request, "{langID}", $this->langID);
+		$request = $this->replaceRequest($request, "{notifyURL}", $this->notifyURL);
+		$request = $this->replaceRequest($request, "{errorURL}", $this->errorURL);
 		if ($this->callbackURL != NULL)
 			$request = $this->replaceRequest($request, "{callbackURL}", "<callbackURL><![CDATA[" . $this->callbackURL . "]]></callbackURL>");
 		else
 			$request = $this->replaceRequest($request, "{callbackURL}", "");
-
-		if ($this->pan != NULL)
-			$request = $this->replaceRequest($request, "{pan}", "<pan><![CDATA[" . $this->pan . "]]></pan>");
+		
+		if ($this->addInfo1 != NULL)
+			$request = $this->replaceRequest($request, "{addInfo1}", "<addInfo1><![CDATA[" . $this->addInfo1 . "]]></addInfo1>");
 		else
-			$request = $this->replaceRequest($request, "{pan}", "");
-
+			$request = $this->replaceRequest($request, "{addInfo1}", "");
+		if ($this->addInfo2 != NULL)
+			$request = $this->replaceRequest($request, "{addInfo2}", "<addInfo2><![CDATA[" . $this->addInfo2 . "]]></addInfo2>");
+		else
+			$request = $this->replaceRequest($request, "{addInfo2}", "");
+		if ($this->addInfo3 != NULL)
+			$request = $this->replaceRequest($request, "{addInfo3}", "<addInfo3><![CDATA[" . $this->addInfo3 . "]]></addInfo3>");
+		else
+			$request = $this->replaceRequest($request, "{addInfo3}", "");
+		if ($this->addInfo4 != NULL)
+			$request = $this->replaceRequest($request, "{addInfo4}", "<addInfo4><![CDATA[" . $this->addInfo4 . "]]></addInfo4>");
+		else
+			$request = $this->replaceRequest($request, "{addInfo4}", "");
+		if ($this->addInfo5 != NULL)
+			$request = $this->replaceRequest($request, "{addInfo5}", "<addInfo5><![CDATA[" . $this->addInfo5 . "]]></addInfo5>");
+		else
+			$request = $this->replaceRequest($request, "{addInfo5}", "");
+		
 		if ($this->payInstrToken != NULL)
 			$request = $this->replaceRequest($request, "{payInstrToken}", "<payInstrToken><![CDATA[" . $this->payInstrToken . "]]></payInstrToken>");
 		else
@@ -215,46 +213,19 @@ class IgfsCgAuth extends BaseIgfsCgTran {
 		else
 			$request = $this->replaceRequest($request, "{payInstrTokenUsageLimit}", "");
 
-		if ($this->cvv2 != NULL)
-			$request = $this->replaceRequest($request, "{cvv2}", "<cvv2><![CDATA[" . $this->cvv2 . "]]></cvv2>");
-		else
-			$request = $this->replaceRequest($request, "{cvv2}", "");
-
-		if ($this->expireMonth != NULL)
-			$request = $this->replaceRequest($request, "{expireMonth}", "<expireMonth><![CDATA[" . $this->expireMonth . "]]></expireMonth>");
-		else
-			$request = $this->replaceRequest($request, "{expireMonth}", "");
-		if ($this->expireYear != NULL)
-			$request = $this->replaceRequest($request, "{expireYear}", "<expireYear><![CDATA[" . $this->expireYear . "]]></expireYear>");
-		else
-			$request = $this->replaceRequest($request, "{expireYear}", "");
-
 		if ($this->accountName != NULL)
 			$request = $this->replaceRequest($request, "{accountName}", "<accountName><![CDATA[" . $this->accountName . "]]></accountName>");
 		else
 			$request = $this->replaceRequest($request, "{accountName}", "");
 
-		if ($this->enrStatus != NULL)
-			$request = $this->replaceRequest($request, "{enrStatus}", "<enrStatus><![CDATA[" . $this->enrStatus . "]]></enrStatus>");
-		else
-			$request = $this->replaceRequest($request, "{enrStatus}", "");
-		if ($this->authStatus != NULL)
-			$request = $this->replaceRequest($request, "{authStatus}", "<authStatus><![CDATA[" . $this->authStatus . "]]></authStatus>");
-		else
-			$request = $this->replaceRequest($request, "{authStatus}", "");
-		if ($this->cavv != NULL)
-			$request = $this->replaceRequest($request, "{cavv}", "<cavv><![CDATA[" . $this->cavv . "]]></cavv>");
-		else
-			$request = $this->replaceRequest($request, "{cavv}", "");
-		if ($this->xid != NULL)
-			$request = $this->replaceRequest($request, "{xid}", "<xid><![CDATA[" . $this->xid . "]]></xid>");
-		else
-			$request = $this->replaceRequest($request, "{xid}", "");
-
 		if ($this->level3Info != NULL)
 			$request = $this->replaceRequest($request, "{level3Info}", $this->level3Info->toXml());
 		else
 			$request = $this->replaceRequest($request, "{level3Info}", "");
+		if ($this->mandateInfo != NULL)
+			$request = $this->replaceRequest($request, "{mandateInfo}", $this->mandateInfo->toXml());
+		else
+			$request = $this->replaceRequest($request, "{mandateInfo}", "");
 		if ($this->description != NULL)
 			$request = $this->replaceRequest($request, "{description}", "<description><![CDATA[" . $this->description . "]]></description>");
 		else
@@ -281,36 +252,34 @@ class IgfsCgAuth extends BaseIgfsCgTran {
 		else
 			$request = $this->replaceRequest($request, "{payInstrTokenAsTopUpID}", "");
 
-		if ($this->promoCode != NULL)
-			$request = $this->replaceRequest($request, "{promoCode}", "<promoCode><![CDATA[" . $this->promoCode . "]]></promoCode>");
-		else
-			$request = $this->replaceRequest($request, "{promoCode}", "");
-
-		if ($this->payPassData != NULL)
-			$request = $this->replaceRequest($request, "{payPassData}", "<payPassData><![CDATA[" . $this->payPassData . "]]></payPassData>");
-		else
-			$request = $this->replaceRequest($request, "{payPassData}", "");
-			
-		if ($this->userAgent != NULL)
-			$request = $this->replaceRequest($request, "{userAgent}", "<userAgent><![CDATA[" . $this->userAgent . "]]></userAgent>");
-		else
-			$request = $this->replaceRequest($request, "{userAgent}", "");
-			
-		if ($this->fingerPrint != NULL)
-			$request = $this->replaceRequest($request, "{fingerPrint}", "<fingerPrint><![CDATA[" . $this->fingerPrint . "]]></fingerPrint>");
-		else
-			$request = $this->replaceRequest($request, "{fingerPrint}", "");
-
 		if ($this->validityExpire != NULL)
 			$request = $this->replaceRequest($request, "{validityExpire}", "<validityExpire><![CDATA[" . IgfsUtils::formatXMLGregorianCalendar($this->validityExpire) . "]]></validityExpire>");
 		else
 			$request = $this->replaceRequest($request, "{validityExpire}", "");
 
+		if ($this->minExpireMonth != NULL)
+			$request = $this->replaceRequest($request, "{minExpireMonth}", "<minExpireMonth><![CDATA[" . $this->minExpireMonth . "]]></minExpireMonth>");
+		else
+			$request = $this->replaceRequest($request, "{minExpireMonth}", "");
+		if ($this->minExpireYear != NULL)
+			$request = $this->replaceRequest($request, "{minExpireYear}", "<minExpireYear><![CDATA[" . $this->minExpireYear . "]]></minExpireYear>");
+		else
+			$request = $this->replaceRequest($request, "{minExpireYear}", "");
+
+		if ($this->termInfo != NULL) {
+			$sb = "";
+			foreach ($this->termInfo as $item) {
+				$sb .= $item->toXml();
+			}
+			$request = $this->replaceRequest($request, "{termInfo}", $sb);
+		} else
+			$request = $this->replaceRequest($request, "{termInfo}", "");
+
 		return $request;
 	}
 
 	protected function setRequestSignature($request) {
-		// signature dove il buffer e' cosi composto APIVERSION|TID|SHOPID|SHOPUSERREF|SHOPUSERNAME|SHOPUSERACCOUNT|SHOPUSERMOBILEPHONE|SHOPUSERIP|TRTYPE|AMOUNT|CURRENCYCODE|CALLBACKURL|PAN|PAYINSTRTOKEN|CVV2|EXPIREMONTH|EXPIREYEAR|UDF1|UDF2|UDF3|UDF4|UDF5
+		// signature dove il buffer e' cosi composto APIVERSION|TID|SHOPID|SHOPUSERREF|SHOPUSERNAME|SHOPUSERACCOUNT|SHOPUSERMOBILEPHONE|TRTYPE|AMOUNT|CURRENCYCODE|LANGID|NOTIFYURL|ERRORURL|CALLBACKURL
 		$fields = array(
 				$this->getVersion(), // APIVERSION
 				$this->tid, // TID
@@ -319,21 +288,19 @@ class IgfsCgAuth extends BaseIgfsCgTran {
 				$this->shopUserName, // SHOPUSERNAME
 				$this->shopUserAccount, // SHOPUSERACCOUNT
 				$this->shopUserMobilePhone, //SHOPUSERMOBILEPHONE
-				$this->shopUserIP, // SHOPUSERIP
 				$this->trType,// TRTYPE
 				$this->amount, // AMOUNT
 				$this->currencyCode, // CURRENCYCODE
+				$this->langID, // LANGID
+				$this->notifyURL, // NOTIFYURL
+				$this->errorURL, // ERRORURL
 				$this->callbackURL, // CALLBACKURL
-				$this->pan, // PAN
-				$this->payInstrToken, // PAYINSTRTOKEN
-				$this->cvv2, // CVV2
-				$this->expireMonth, // EXPIREMONTH
-				$this->expireYear, // EXPIREYEAR
 				$this->addInfo1, // UDF1
 				$this->addInfo2, // UDF2
 				$this->addInfo3, // UDF3
 				$this->addInfo4, // UDF4
 				$this->addInfo5, // UDF5
+				$this->payInstrToken, // PAYINSTRTOKEN
 				$this->topUpID);
 		$signature = $this->getSignature($this->kSig, // KSIGN
 				$fields); 
@@ -346,27 +313,7 @@ class IgfsCgAuth extends BaseIgfsCgTran {
 		// Opzionale
 		$this->paymentID = IgfsUtils::getValue($response, "paymentID");
 		// Opzionale
-		$this->authCode = IgfsUtils::getValue($response, "authCode");
-		// Opzionale
-		$this->brand = IgfsUtils::getValue($response, "brand");
-		// Opzionale
-		$this->maskedPan = IgfsUtils::getValue($response, "maskedPan");
-		// Opzionale
-		$this->payInstrToken = IgfsUtils::getValue($response, "payInstrToken");
-		// Opzionale
-		$this->additionalFee = IgfsUtils::getValue($response, "additionalFee");
-		// Opzionale
-		$this->status = IgfsUtils::getValue($response, "status");
-		// Opzionale
-		$this->nssResult = IgfsUtils::getValue($response, "nssResult");
-		// Opzionale
-		$this->topUpID = IgfsUtils::getValue($response, "topUpID");
-		// Opzionale
-		try {
-			$this->receiptPdf = base64_decode(IgfsUtils::getValue($response, "receiptPdf"));
-		} catch(Exception $e) {
-			$this->receiptPdf = NULL;
-		}
+		$this->redirectURL = IgfsUtils::getValue($response, "redirectURL");
 	}
 
 	protected function getResponseSignature($response) {
@@ -375,17 +322,15 @@ class IgfsCgAuth extends BaseIgfsCgTran {
 				IgfsUtils::getValue($response, "shopID"), // SHOPID
 				IgfsUtils::getValue($response, "rc"), // RC
 				IgfsUtils::getValue($response, "errorDesc"),// ERRORDESC
-				IgfsUtils::getValue($response, "tranID"), // ORDERID
-				IgfsUtils::getValue($response, "date"), // TRANDATE
 				IgfsUtils::getValue($response, "paymentID"), // PAYMENTID
-				IgfsUtils::getValue($response, "authCode"));// AUTHCODE	
-		// signature dove il buffer e' cosi composto TID|SHOPID|RC|ERRORCODE|ORDERID|PAYMENTID|AUTHCODE
+				IgfsUtils::getValue($response, "redirectURL"));// REDIRECTURL	
+		// signature dove il buffer e' cosi composto TID|SHOPID|RC|ERRORDESC|PAYMENTID|REDIRECTURL
 		return $this->getSignature($this->kSig, // KSIGN
 				$fields); 
 	}
 	
 	protected function getFileName() {
-		return "IGFS_CG_API\tran\IgfsCgAuth.request";
+		return "IGFS_CG_API\init\IgfsCgInit.request";
 	}
 
 }

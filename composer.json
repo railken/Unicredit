@@ -3,8 +3,8 @@
     "version": "master",
     "minimum-stability": "dev",
     "autoload": {
-        "psr-0" : {
-            "EchoWine\\Unicredit" : "src/"
+        "psr-4" : {
+            "EchoWine\\Unicredit\\" : "src/"
         }
     }
 }

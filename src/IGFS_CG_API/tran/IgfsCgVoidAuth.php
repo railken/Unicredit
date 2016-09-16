@@ -1,8 +1,8 @@
 <?php
 
-namespace EchoWine\Unicredit\Api\IGFS_CG_API;
+namespace EchoWine\Unicredit\IGFS_CG_API;
 
-use EchoWine\Unicredit\Api\IGFS_CG_API\tran\BaseIgfsCgTran;
+use EchoWine\Unicredit\IGFS_CG_API\tran\BaseIgfsCgTran;
 
 class IgfsCgVoidAuth extends BaseIgfsCgTran {
 

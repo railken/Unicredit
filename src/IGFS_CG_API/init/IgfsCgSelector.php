@@ -1,9 +1,9 @@
 <?php
 
-namespace EchoWine\Unicredit\Api\IGFS_CG_API;
+namespace EchoWine\Unicredit\IGFS_CG_API;
 
-use EchoWine\Unicredit\Api\IGFS_CG_API\init\BaseIgfsCgInit;
-use EchoWine\Unicredit\Api\IGFS_CG_API\init\SelectorTerminalInfo;
+use EchoWine\Unicredit\IGFS_CG_API\init\BaseIgfsCgInit;
+use EchoWine\Unicredit\IGFS_CG_API\init\SelectorTerminalInfo;
 
 class IgfsCgSelector extends BaseIgfsCgInit {
 

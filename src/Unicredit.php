@@ -1,19 +1,34 @@
 <?php
 	
 
-namespace Unicredit\Api;
+namespace EchoWine\Unicredit\Api;
 
-use Unicredit\Api\IGFS_CG_API\init\IgfsCgInit;
+use EchoWine\Unicredit\IGFS_CG_API\init\IgfsCgInit;
 
-class Gateway{
+class Unicredit{
 
 
+	/**
+	 * Basic configuration
+	 *
+	 * @var array
+	 */
 	public static $cfg;
 
+	/**
+	 * Initialize the configuration
+	 *
+	 * @param array $cfg
+	 */
 	public static function ini($cfg){
 		self::$cfg = $cfg;
 	}
 
+	/**
+	 * Get new instance request
+	 *
+	 * @return IgfsCgInit;
+	 */
 	public function getInit(){
 		$init = new IgfsCgInit();
 		$init -> serverURL = self::$cfg['url'];
@@ -32,7 +47,7 @@ class Gateway{
 		return 'http://' . $_SERVER['HTTP_HOST'] . dirname($_SERVER['REQUEST_URI']);
 	}
 
-	public function process($id,$email,$amount){
+	public function payment($id,$email,$amount){
 
 		$init = $this -> getInit();
 		$init -> shopID = $id;

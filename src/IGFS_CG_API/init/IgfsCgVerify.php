@@ -1,9 +1,9 @@
 <?php
 
-namespace EchoWine\Unicredit\Api\IGFS_CG_API;
+namespace EchoWine\Unicredit\IGFS_CG_API;
 
-use EchoWine\Unicredit\Api\IGFS_CG_API\init\BaseIgfsCgInit;
-use EchoWine\Unicredit\Api\IGFS_CG_API\Level3Info;
+use EchoWine\Unicredit\IGFS_CG_API\init\BaseIgfsCgInit;
+use EchoWine\Unicredit\IGFS_CG_API\Level3Info;
 
 class IgfsCgVerify extends BaseIgfsCgInit {
 

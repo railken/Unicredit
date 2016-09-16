@@ -1,9 +1,9 @@
 <?php
 
-namespace EchoWine\Unicredit\Api\IGFS_CG_API;
+namespace EchoWine\Unicredit\IGFS_CG_API;
 
-use EchoWine\Unicredit\Api\IGFS_CG_API\IgfsUtils;
-use EchoWine\Unicredit\Api\IGFS_CG_API\Exception;
+use EchoWine\Unicredit\IGFS_CG_API\IgfsUtils;
+use EchoWine\Unicredit\IGFS_CG_API\Exception;
 
 abstract class BaseIgfsCg {
 	
