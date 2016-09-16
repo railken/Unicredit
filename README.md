@@ -1,19 +1,17 @@
 # unicredit
 Unicredit library for online payments
 
-
-Namespace
-
+# Installation
 ```php
-<?php
-use EchoWine\Unicredit\Unicredit;
+$ composer require monolog/monolog
 ```
 
-
-Initialize
+Basic configuration
 
 ```php
 <?php
+
+use EchoWine\Unicredit\Unicredit;
 
 # Initialize with configuration
 Unicredit::ini([
@@ -29,6 +27,8 @@ Checkout page
 
 ```php
 <?php
+
+use EchoWine\Unicredit\Unicredit;
 
 # Make a new instance
 $uc = new Unicredit();
@@ -67,6 +67,8 @@ Verify page
 
 ```php
 <?php
+
+use EchoWine\Unicredit\Unicredit;
 
 # Retrieve $transaction_id and $order_id from DB/Cookie
 
