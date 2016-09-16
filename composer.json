@@ -1,11 +1,7 @@
 {
     "name": "echowine/unicredit",
     "version": "master",
-    "source": {
-        "url": "git://github.com/echowine/unicredit.git",
-        "type": "git",
-        "reference": "master"
-    },
+    "minimum-stability": "dev",
     "autoload": {
         "psr-0" : {
             "EchoWine\\Unicredit" : "src/"
