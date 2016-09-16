@@ -17,8 +17,6 @@ Initialize
 
 # Initialize with configuration
 Unicredit::ini([
-    'url' => "https://testuni.netsw.it/UNI_CG_SERVICES/services/PaymentInitGatewayPort?wsdl",
-    'timeout' => 15000,
     'terminal_id' => 'UNI_ECOM',
     'api_key' => 'UNI_TESTKEY',
     'currency' => 'EUR',
