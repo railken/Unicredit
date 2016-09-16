@@ -1,12 +1,12 @@
 # unicredit
-Unicredit library for online payments
+Library to perform online payments with unicredit
 
 # Installation
 ```php
 $ composer require monolog/monolog
 ```
 
-Basic configuration
+# Basic configuration
 
 ```php
 <?php
@@ -23,7 +23,7 @@ Unicredit::ini([
 ```
 
 
-Checkout page
+# Checkout page
 
 ```php
 <?php
@@ -63,7 +63,7 @@ if($transaction_id){
 ```
 
 
-Verify page
+# Verify page
 
 ```php
 <?php
