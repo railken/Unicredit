@@ -331,7 +331,7 @@ class IgfsCgInit extends BaseIgfsCgInit {
 	}
 	
 	protected function getFileName() {
-		return "IGFS_CG_API\init\IgfsCgInit.request";
+		return "IGFS_CG_API/init/IgfsCgInit.request";
 	}
 
 }

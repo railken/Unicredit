@@ -175,7 +175,7 @@ class IgfsCgSelector extends BaseIgfsCgInit {
 	}
 	
 	protected function getFileName() {
-		return "IGFS_CG_API\init\IgfsCgSelector.request";
+		return "IGFS_CG_API/init/IgfsCgSelector.request";
 	}
 
 }

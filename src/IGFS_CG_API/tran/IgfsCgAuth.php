@@ -385,7 +385,7 @@ class IgfsCgAuth extends BaseIgfsCgTran {
 	}
 	
 	protected function getFileName() {
-		return "IGFS_CG_API\tran\IgfsCgAuth.request";
+		return "IGFS_CG_API/tran/IgfsCgAuth.request";
 	}
 
 }

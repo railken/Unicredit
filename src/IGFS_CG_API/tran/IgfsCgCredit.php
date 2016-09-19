@@ -164,7 +164,7 @@ class IgfsCgCredit extends BaseIgfsCgTran {
 	}
 	
 	protected function getFileName() {
-		return "IGFS_CG_API\tran\IgfsCgCredit.request";
+		return "IGFS_CG_API/tran/IgfsCgCredit.request";
 	}
 
 }

@@ -78,7 +78,7 @@ class IgfsCgVoidAuth extends BaseIgfsCgTran {
 	}
 	
 	protected function getFileName() {
-		return "IGFS_CG_API\tran\IgfsCgVoidAuth.request";
+		return "IGFS_CG_API/tran/IgfsCgVoidAuth.request";
 	}
 
 }

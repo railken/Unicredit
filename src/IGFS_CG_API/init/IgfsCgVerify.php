@@ -156,7 +156,7 @@ class IgfsCgVerify extends BaseIgfsCgInit {
 	}
 	
 	protected function getFileName() {
-		return "IGFS_CG_API\init\IgfsCgVerify.request";
+		return "IGFS_CG_API/init/IgfsCgVerify.request";
 	}
 
 }

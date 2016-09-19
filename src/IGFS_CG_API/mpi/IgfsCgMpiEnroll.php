@@ -203,7 +203,7 @@ class IgfsCgMpiEnroll extends BaseIgfsCgMpi {
 	}
 	
 	protected function getFileName() {
-		return "IGFS_CG_API\mpi\IgfsCgMpiEnroll.request";
+		return "IGFS_CG_API/mpi/IgfsCgMpiEnroll.request";
 	}
 
 }

@@ -88,7 +88,7 @@ class IgfsCgMpiAuth extends BaseIgfsCgMpi {
 	}
 	
 	protected function getFileName() {
-		return "IGFS_CG_API\mpi\IgfsCgMpiAuth.request";
+		return "IGFS_CG_API/mpi/IgfsCgMpiAuth.request";
 	}
 
 }

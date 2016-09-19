@@ -126,7 +126,7 @@ class IgfsCgConfirm extends BaseIgfsCgTran {
 	}
 	
 	protected function getFileName() {
-		return "IGFS_CG_API\tran\IgfsCgConfirm.request";
+		return "IGFS_CG_API/tran/IgfsCgConfirm.request";
 	}
 
 }
