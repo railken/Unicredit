@@ -73,7 +73,7 @@ class Unicredit{
 	/**
 	 * Set urls
 	 *
-	 * @param Array $urls
+	 * @param array $urls
 	 */
 	public function urls($urls){
 		$this -> verify_url = isset($urls['verify']) ? $urls['verify'] : null;
