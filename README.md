@@ -46,7 +46,7 @@ use EchoWine\Unicredit\Unicredit;
 $uc = new Unicredit();
 
 # Set redirect url
-$uc -> urls([
+$uc->urls([
     'verify' => 'http://localhost/verify.php',
     'error' => 'http://localhost/error.php'
 ]);
@@ -56,20 +56,20 @@ $order_id = md5(time());
 
 # Make a request
 # Return the Payment ID
-$transaction_id = $uc -> payment($order_id,'email@customer.com',10);
+$transaction_id = $uc->payment($order_id,'email@customer.com',10);
 
-if($transaction_id){
+if ($transaction_id) {
     
     # IMPORTANT !!!    
     # Save $order_id and $transaction_id in DB or Cookie in order to retrieve in the next page
 
     # Redirect to the checkout
-    $uc -> getUrl();
+    $uc->getUrl();
 
 }else{
 	
     # Get error
-    $error = $uc -> getLastError();
+    $error = $uc->getLastError();
 }
 
 ```
@@ -87,28 +87,28 @@ use EchoWine\Unicredit\Unicredit;
 # Make a new instance
 $uc = new Unicredit();
 
-$check = $uc -> verify($order_id,$transaction_id);
+$check = $uc->verify($order_id,$transaction_id);
 
-if($check){
+if ($check) {
 
-    $response = $uc -> getResponse();
+    $response = $uc->getResponse();
 
-    if(empty($response -> error)){
+    if (empty($response->error)) {
 
         # Success!!!
         # Payments is now confirmed
 
-    }else{
+    } else {
 
         # Some error
-        $uc -> getLastError();
+        $uc->getLastError();
     }
 
 
 }else{
     
     # Error: check failed
-    $uc -> getLastError();
+    $uc->getLastError();
 }
 
 
