@@ -1,8 +1,8 @@
 <?php
 
-namespace EchoWine\Unicredit\IGFS_CG_API;
+namespace Railken\Unicredit\IGFS_CG_API;
 
-use EchoWine\Unicredit\IGFS_CG_API\Level3InfoProduct;
+use Railken\Unicredit\IGFS_CG_API\Level3InfoProduct;
 
 class Level3Info {
 	

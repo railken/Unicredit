@@ -1,9 +1,9 @@
 <?php
 
 
-namespace EchoWine\Unicredit\IGFS_CG_API\tran;
+namespace Railken\Unicredit\IGFS_CG_API\tran;
 
-use EchoWine\Unicredit\IGFS_CG_API\tran\BaseIgfsCgTran;
+use Railken\Unicredit\IGFS_CG_API\tran\BaseIgfsCgTran;
 
 class IgfsCgConfirm extends BaseIgfsCgTran {
 

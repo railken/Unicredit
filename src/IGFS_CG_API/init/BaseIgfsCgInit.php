@@ -1,8 +1,8 @@
 <?php
 
-namespace EchoWine\Unicredit\IGFS_CG_API\init;
+namespace Railken\Unicredit\IGFS_CG_API\init;
 
-use EchoWine\Unicredit\IGFS_CG_API\BaseIgfsCg;
+use Railken\Unicredit\IGFS_CG_API\BaseIgfsCg;
 
 abstract class BaseIgfsCgInit extends BaseIgfsCg {
 

@@ -1,11 +1,11 @@
 <?php
 
-namespace EchoWine\Unicredit\IGFS_CG_API\init;
+namespace Railken\Unicredit\IGFS_CG_API\init;
 
-use EchoWine\Unicredit\IGFS_CG_API\init\BaseIgfsCgInit;
-use EchoWine\Unicredit\IGFS_CG_API\Level3Info;
-use EchoWine\Unicredit\IGFS_CG_API\IgfsMissingParException;
-use EchoWine\Unicredit\IGFS_CG_API\IgfsUtils;
+use Railken\Unicredit\IGFS_CG_API\init\BaseIgfsCgInit;
+use Railken\Unicredit\IGFS_CG_API\Level3Info;
+use Railken\Unicredit\IGFS_CG_API\IgfsMissingParException;
+use Railken\Unicredit\IGFS_CG_API\IgfsUtils;
 
 class IgfsCgVerify extends BaseIgfsCgInit {
 

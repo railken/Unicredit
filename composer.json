@@ -1,9 +1,9 @@
 {
-    "name": "echowine/unicredit",
+    "name": "railken/unicredit",
     "type": "library",
     "autoload": {
         "psr-4" : {
-            "EchoWine\\Unicredit\\" : "src/"
+            "Railken\\Unicredit\\" : "src/"
         }
     },
     "require": {

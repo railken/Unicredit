@@ -1,9 +1,9 @@
 <?php
 	
-namespace EchoWine\Unicredit;
+namespace Railken\Unicredit;
 
-use EchoWine\Unicredit\IGFS_CG_API\init\IgfsCgInit;
-use EchoWine\Unicredit\IGFS_CG_API\init\IgfsCgVerify;
+use Railken\Unicredit\IGFS_CG_API\init\IgfsCgInit;
+use Railken\Unicredit\IGFS_CG_API\init\IgfsCgVerify;
 use Railken\Bag;
 
 class Unicredit
@@ -23,7 +23,7 @@ class Unicredit
 	public function __construct($cfg)
 	{
 		$this->cfg = array_merge([
-			'timeout' => 3600
+			'timeout' => 150000
 		], $cfg);
 	}
 

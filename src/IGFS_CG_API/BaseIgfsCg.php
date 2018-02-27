@@ -1,8 +1,8 @@
 <?php
 
-namespace EchoWine\Unicredit\IGFS_CG_API;
+namespace Railken\Unicredit\IGFS_CG_API;
 
-use EchoWine\Unicredit\IGFS_CG_API\IgfsUtils;
+use Railken\Unicredit\IGFS_CG_API\IgfsUtils;
 use SimpleXMLElement;
 
 abstract class BaseIgfsCg {

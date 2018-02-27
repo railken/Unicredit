@@ -1,7 +1,7 @@
 <?php
 
 use PHPUnit\Framework\TestCase;
-use EchoWine\Unicredit\Unicredit;
+use Railken\Unicredit\Unicredit;
 
 class BasicTest extends TestCase
 {
@@ -31,6 +31,7 @@ class BasicTest extends TestCase
         print_r("\n-------------------------\n");
         print_r(sprintf("\nCheckout: %s", $response->redirect_url));
         print_r(sprintf("\nOrder ID: %s\nTransaction ID: %s", $order_id, $response->transaction_id));
+        print_r("\n\n");
 
 
         $response = $uc->verify($order_id, $response->transaction_id);
@@ -43,13 +44,8 @@ class BasicTest extends TestCase
     {
 
         $uc = $this->getUnicredit();
+        $response = $uc->verify("f42b7f565bb4e13dda41992a39da371e", "00058382936101267683");
 
-        $order_id = md5(time());
-
-        $response = $uc->payment($order_id, 'email@customer.com', 10);
-        $this->assertEquals(20, strlen($response->transaction_id));
-        print_r("\n-------------------------\n");
-        print_r(sprintf("\nCheckout: %s", $response->redirect_url));
-        print_r(sprintf("\nOrder ID: %s\nTransaction ID: %s", $order_id, $response->transaction_id));
+        print_r($response);
     }
 }
