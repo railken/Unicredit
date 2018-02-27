@@ -4,6 +4,8 @@ namespace Railken\Unicredit;
 
 use Railken\Unicredit\IGFS_CG_API\init\IgfsCgInit;
 use Railken\Unicredit\IGFS_CG_API\init\IgfsCgVerify;
+use Railken\Unicredit\IGFS_CG_API\BaseIgfsCg;
+
 use Railken\Bag;
 
 class Unicredit
@@ -34,8 +36,7 @@ class Unicredit
      */
     public function getInit()
     {
-        $init = new IgfsCgInit();
-        return $this->getCG($init);
+        return $this->getCG(new IgfsCgInit());
     }
 
     /**
@@ -45,19 +46,27 @@ class Unicredit
      */
     public function getVerify()
     {
-        $verify = new IgfsCgVerify();
-        return $this->getCG($verify);
+        return $this->getCG(new IgfsCgVerify());
     }
 
-    public function getCG($obj)
+    /**
+     * Get basic cg
+     *
+     * @param BaseIgfsCg $obj
+     *
+     * @return BaseIgfsCg
+     */
+    public function getCG(BaseIgfsCg $obj)
     {
         $obj->timeout = $this->cfg['timeout'];
         $obj->tid = $this->cfg['terminal_id'];
         $obj->kSig = $this->cfg['api_key'];
         $obj->currencyCode = $this->cfg['currency'];
         $obj->langID =  $this->cfg['lang'];
+
         return $obj;
     }
+
     /**
      * Make request payment
      *
