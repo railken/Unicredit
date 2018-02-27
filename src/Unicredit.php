@@ -15,28 +15,6 @@ class Unicredit
 	 * @var array
 	 */
 	public $cfg;
-
-	/**
-	 * Server url
-	 *
-	 * @var string
-	 */
-	private $server_url = "https://testuni.netsw.it/UNI_CG_SERVICES/services/PaymentInitGatewayPort?wsdl";
-	
-	/**
-	 * Url to redirect in case of error
-	 *
-	 * @var string
-	 */
-	protected $verify_url;
-	
-	/**
-	 * Url to redirect in case of error
-	 *
-	 * @var string
-	 */
-	protected $error_url;
-
 	/**
 	 * Initialize the configuration
 	 *
@@ -80,18 +58,6 @@ class Unicredit
 		$obj->langID =  $this->cfg['lang'];
 		return $obj;
 	}
-
-	/**
-	 * Set urls
-	 *
-	 * @param array $urls
-	 */
-	public function urls($urls)
-	{
-		$this->verify_url = isset($urls['verify']) ? $urls['verify'] : null;
-		$this->error_url = isset($urls['error']) ? $urls['error'] : null;
-	}
-
 	/**
 	 * Make request payment
 	 *
@@ -105,18 +71,22 @@ class Unicredit
 	{
 
 		$init = $this->getInit();
-		$init->serverURL = $this->server_url;
-		$init->notifyURL = $this->verify_url;
-		$init->errorURL = $this->error_url;
+		$init->serverURL = $this->cfg['base_url']."/UNI_CG_SERVICES/services/PaymentInitGatewayPort?wsdl";
+		$init->notifyURL = $this->cfg['verify_url'];
+		$init->errorURL = $this->cfg['error_url'];
 		$init->shopID = $id;
 		$init->shopUserRef = $email;
 		$init->trType = "AUTH";
 		$init->amount = $amount * 100;
 
-		if(!$init->execute()) 
-			return false;
-		
 		$response = new Bag();
+
+
+		if(!$init->execute())  {
+			$response->error = $init->errorDesc;
+			return false;
+		}
+		
 		$response->transaction_id = $init->paymentID;
 		$response->redirect_url = $init->redirectURL;
 
@@ -135,12 +105,20 @@ class Unicredit
 	{
 
 		$verify = $this->getVerify();
-		$verify->serverURL = "https://testuni.netsw.it/UNI_CG_SERVICES/services";
+		$verify->serverURL = $this->cfg['base_url']."/UNI_CG_SERVICES/services";
 		$verify->shopID = $order;
 		$verify->paymentID = $transaction;
 		$verify->execute();
 
 		$response = new Bag();
+
+
+		if ($verify->error)  {
+			$response->error = new Bag();
+			$response->error->code = $verify->error;
+			$response->error->description = $verify->errorDesc;
+			return $response;
+		}
 
 		return $response;
 	}
