@@ -9,15 +9,12 @@ class BasicTest extends TestCase
     public function testCheckout()
     {
 
-        # Initialize with configuration
-        Unicredit::ini([
+        $uc = new Unicredit([
             'terminal_id' => 'UNI_ECOM',
             'api_key' => 'UNI_TESTKEY',
             'currency' => 'EUR',
             'lang' => 'IT'
         ]);
-
-        $uc = new Unicredit();
 
         $uc->urls([
             'verify' => 'http://localhost/verify.php',
@@ -26,12 +23,7 @@ class BasicTest extends TestCase
 
         $order_id = md5(time());
 
-        $transaction_id = $uc->payment($order_id,'email@customer.com',10);
-
-        if ($transaction_id) {
-
-            echo $uc->getUrl();
-        
-        }
+        $response = $uc->payment($order_id,'email@customer.com',10);
+        $this->assertEquals(20, strlen($response->transaction_id));
     }
 }

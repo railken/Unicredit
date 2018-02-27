@@ -4,6 +4,7 @@ namespace EchoWine\Unicredit;
 
 use EchoWine\Unicredit\IGFS_CG_API\init\IgfsCgInit;
 use EchoWine\Unicredit\IGFS_CG_API\init\IgfsCgVerify;
+use Railken\Bag;
 
 class Unicredit
 {
@@ -13,7 +14,14 @@ class Unicredit
 	 *
 	 * @var array
 	 */
-	public static $cfg;
+	public $cfg;
+
+	/**
+	 * Server url
+	 *
+	 * @var string
+	 */
+	private $server_url = "https://testuni.netsw.it/UNI_CG_SERVICES/services/PaymentInitGatewayPort?wsdl";
 	
 	/**
 	 * Url to redirect in case of error
@@ -34,10 +42,11 @@ class Unicredit
 	 *
 	 * @param array $cfg
 	 */
-	public static function ini($cfg)
+	public function __construct($cfg)
 	{
-		self::$cfg = $cfg;
-		self::$cfg['timeout'] = 15000;
+		$this->cfg = array_merge([
+			'timeout' => 3600
+		], $cfg);
 	}
 
 	/**
@@ -64,11 +73,11 @@ class Unicredit
 
 	public function getCG($obj)
 	{
-		$obj->timeout = self::$cfg['timeout'];
-		$obj->tid = self::$cfg['terminal_id'];
-		$obj->kSig = self::$cfg['api_key'];
-		$obj->currencyCode = self::$cfg['currency'];
-		$obj->langID =  self::$cfg['lang'];
+		$obj->timeout = $this->cfg['timeout'];
+		$obj->tid = $this->cfg['terminal_id'];
+		$obj->kSig = $this->cfg['api_key'];
+		$obj->currencyCode = $this->cfg['currency'];
+		$obj->langID =  $this->cfg['lang'];
 		return $obj;
 	}
 
@@ -96,7 +105,7 @@ class Unicredit
 	{
 
 		$init = $this->getInit();
-		$init->serverURL = "https://testuni.netsw.it/UNI_CG_SERVICES/services/PaymentInitGatewayPort?wsdl";
+		$init->serverURL = $this->server_url;
 		$init->notifyURL = $this->verify_url;
 		$init->errorURL = $this->error_url;
 		$init->shopID = $id;
@@ -104,42 +113,14 @@ class Unicredit
 		$init->trType = "AUTH";
 		$init->amount = $amount * 100;
 
-		$this->response = $init;
-		
 		if(!$init->execute()) 
 			return false;
 		
-		return $init->paymentID;
-	}
+		$response = new Bag();
+		$response->transaction_id = $init->paymentID;
+		$response->redirect_url = $init->redirectURL;
 
-	/**
-	 * Get response
-	 *
-	 * @return Response
-	 */
-	public function getResponse()
-	{
-		return $this->response;
-	}
-	
-	/** 
-	 * Get the url to checkout
-	 *
-	 * @return string
-	 */
-	public function getUrl()
-	{
-		return $this->response->redirectURL;
-	}
-
-	/**
-	 * Get Last error
-	 *
-	 * @return string
-	 */
-	public function getLastError()
-	{
-		return $this->response->errorDesc;
+		return $response;
 	}
 
 	/**
@@ -157,8 +138,10 @@ class Unicredit
 		$verify->serverURL = "https://testuni.netsw.it/UNI_CG_SERVICES/services";
 		$verify->shopID = $order;
 		$verify->paymentID = $transaction;
-		$this->response = $verify;
+		$verify->execute();
 
-		return $verify->execute();
+		$response = new Bag();
+
+		return $response;
 	}
 }
