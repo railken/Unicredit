@@ -9,4 +9,3 @@ class ConnectionException extends IOException
         parent::__construct("[" . $url . "] " . $message);
     }
 }
-?>

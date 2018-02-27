@@ -4,93 +4,99 @@ namespace Railken\Unicredit\IGFS_CG_API\mpi;
 
 use Railken\Unicredit\IGFS_CG_API\mpi\BaseIgfsCgMpi;
 
-class IgfsCgMpiAuth extends BaseIgfsCgMpi {
+class IgfsCgMpiAuth extends BaseIgfsCgMpi
+{
+    public $paRes;
+    public $md;
 
-	public $paRes;
-	public $md;
+    public $authStatus;
+    public $cavv;
+    public $eci;
 
-	public $authStatus;
-	public $cavv;
-	public $eci;
+    public function __construct()
+    {
+        parent::__construct();
+    }
 
-	function __construct() {
-		parent::__construct();
-	}
+    protected function resetFields()
+    {
+        parent::resetFields();
+        $this->paRes = null;
+        $this->md = null;
 
-	protected function resetFields() {
-		parent::resetFields();
-		$this->paRes = NULL;
-		$this->md = NULL;
+        $this->authStatus = null;
+        $this->cavv = null;
+        $this->eci = null;
+    }
 
-		$this->authStatus = NULL;
-		$this->cavv = NULL;
-		$this->eci = NULL;
-	}
+    protected function checkFields()
+    {
+        parent::checkFields();
 
-	protected function checkFields() {
-		parent::checkFields();
+        if ($this->paRes != null) {
+            if ($this->paRes == "") {
+                throw new IgfsMissingParException("Missing paRes");
+            }
+        }
+        if ($this->md != null) {
+            if ($this->md == "") {
+                throw new IgfsMissingParException("Missing md");
+            }
+        }
+    }
 
-		if ($this->paRes != NULL) {
-		if ($this->paRes == "")
-			throw new IgfsMissingParException("Missing paRes");
-		}
-		if ($this->md != NULL) {
-		if ($this->md == "")
-			throw new IgfsMissingParException("Missing md");
-		}
+    protected function buildRequest()
+    {
+        $request = parent::buildRequest();
 
-	}
+        $request = $this->replaceRequest($request, "{paRes}", $this->paRes);
+        $request = $this->replaceRequest($request, "{md}", $this->md);
 
-	protected function buildRequest() {
-		$request = parent::buildRequest();
+        return $request;
+    }
 
-		$request = $this->replaceRequest($request, "{paRes}", $this->paRes);
-		$request = $this->replaceRequest($request, "{md}", $this->md);
+    protected function setRequestSignature($request)
+    {
+        // signature dove il buffer e' cosi composto APIVERSION|TID|SHOPID|PARES|MD
+        $fields = array(
+                $this->getVersion(), // APIVERSION
+                $this->tid, // TID
+                $this->shopID, // SHOPID
+                $this->paRes, // PARES
+                $this->md); // MD
+        $signature = $this->getSignature($this->kSig, // KSIGN
+                $fields);
+        $request = $this->replaceRequest($request, "{signature}", $signature);
+        return $request;
+    }
 
-		return $request;
-	}
+    protected function parseResponseMap($response)
+    {
+        parent::parseResponseMap($response);
+        $this->authStatus = IgfsUtils::getValue($response, "authStatus");
+        // Opzionale
+        $this->cavv = IgfsUtils::getValue($response, "cavv");
+        // Opzionale
+        $this->eci = IgfsUtils::getValue($response, "eci");
+    }
 
-	protected function setRequestSignature($request) {
-		// signature dove il buffer e' cosi composto APIVERSION|TID|SHOPID|PARES|MD
-		$fields = array(
-				$this->getVersion(), // APIVERSION
-				$this->tid, // TID
-				$this->shopID, // SHOPID
-				$this->paRes, // PARES
-				$this->md); // MD
-		$signature = $this->getSignature($this->kSig, // KSIGN
-				$fields); 
-		$request = $this->replaceRequest($request, "{signature}", $signature);
-		return $request;
-	}
-
-	protected function parseResponseMap($response) {
-		parent::parseResponseMap($response);
-		$this->authStatus = IgfsUtils::getValue($response, "authStatus");
-		// Opzionale
-		$this->cavv = IgfsUtils::getValue($response, "cavv");
-		// Opzionale
-		$this->eci = IgfsUtils::getValue($response, "eci");
-	}
-
-	protected function getResponseSignature($response) {
-		$fields = array(
-				IgfsUtils::getValue($response, "tid"), // TID
-				IgfsUtils::getValue($response, "shopID"), // SHOPID
-				IgfsUtils::getValue($response, "rc"), // RC
-				IgfsUtils::getValue($response, "errorDesc"),// ERRORDESC
-				IgfsUtils::getValue($response, "authStatus"), // AUTHSTATUS
-				IgfsUtils::getValue($response, "cavv"), // CAVV
-				IgfsUtils::getValue($response, "eci")); // ECI
-		// signature dove il buffer e' cosi composto TID|SHOPID|RC|ERRORCODE|AUTHSTATUS|CAVV|ECI
-		return $this->getSignature($this->kSig, // KSIGN
-				$fields); 
-	}
-	
-	protected function getFileName() {
-		return "IGFS_CG_API/mpi/IgfsCgMpiAuth.request";
-	}
-
+    protected function getResponseSignature($response)
+    {
+        $fields = array(
+                IgfsUtils::getValue($response, "tid"), // TID
+                IgfsUtils::getValue($response, "shopID"), // SHOPID
+                IgfsUtils::getValue($response, "rc"), // RC
+                IgfsUtils::getValue($response, "errorDesc"),// ERRORDESC
+                IgfsUtils::getValue($response, "authStatus"), // AUTHSTATUS
+                IgfsUtils::getValue($response, "cavv"), // CAVV
+                IgfsUtils::getValue($response, "eci")); // ECI
+        // signature dove il buffer e' cosi composto TID|SHOPID|RC|ERRORCODE|AUTHSTATUS|CAVV|ECI
+        return $this->getSignature($this->kSig, // KSIGN
+                $fields);
+    }
+    
+    protected function getFileName()
+    {
+        return "IGFS_CG_API/mpi/IgfsCgMpiAuth.request";
+    }
 }
-
-?>
