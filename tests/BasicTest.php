@@ -5,10 +5,9 @@ use Railken\Unicredit\Unicredit;
 
 class BasicTest extends TestCase
 {
-   
     public function getUnicredit()
     {
-         return new Unicredit([
+        return new Unicredit([
             'terminal_id' => 'UNI_ECOM',
             'api_key' => 'UNI_TESTKEY',
             'currency' => 'EUR',
@@ -21,7 +20,6 @@ class BasicTest extends TestCase
 
     public function testCheckout()
     {
-
         $uc = $this->getUnicredit();
 
         $order_id = md5(time());
@@ -42,7 +40,6 @@ class BasicTest extends TestCase
 
     public function testVerify()
     {
-
         $uc = $this->getUnicredit();
         $response = $uc->verify("f42b7f565bb4e13dda41992a39da371e", "00058382936101267683");
 
