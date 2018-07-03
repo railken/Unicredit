@@ -65,5 +65,4 @@ class BasicTest extends TestCase
 
         $this->assertEquals(true, $response->ok);
     }
-
 }
