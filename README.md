@@ -36,8 +36,8 @@ $uc = new Unicredit([
     'currency' => 'EUR',
     'lang' => 'IT',
     'base_url' => 'https://testuni.netsw.it',
-    'verify' => 'http://localhost/verify.php',
-    'error' => 'http://localhost/error.php'
+    'verify_url' => 'http://localhost/verify.php',
+    'error_url' => 'http://localhost/error.php'
 ]);
 
 
