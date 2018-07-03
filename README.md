@@ -39,6 +39,7 @@ $uc = new Unicredit([
     'verify_url' => 'http://localhost/verify.php',
     'error_url' => 'http://localhost/error.php'
 ]);
+```
 
 
 
