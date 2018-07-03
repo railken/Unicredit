@@ -1,7 +1,7 @@
 <?php
 
 namespace Railken\Unicredit\IGFS_CG_API\tran;
-
+use Railken\Unicredit\IGFS_CG_API\IgfsUtils;
 use Railken\Unicredit\IGFS_CG_API\tran\BaseIgfsCgTran;
 
 class IgfsCgCredit extends BaseIgfsCgTran
