@@ -3,6 +3,7 @@
 namespace Railken\Unicredit\IGFS_CG_API\tran;
 
 use Railken\Unicredit\IGFS_CG_API\BaseIgfsCg;
+use Railken\Unicredit\IGFS_CG_API\IgfsUtils;
 
 abstract class BaseIgfsCgTran extends BaseIgfsCg
 {
