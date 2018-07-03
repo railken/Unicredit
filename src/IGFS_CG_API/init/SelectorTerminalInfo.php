@@ -2,6 +2,9 @@
 
 namespace Railken\Unicredit\IGFS_CG_API\init;
 
+use SimpleXMLElement;
+use Railken\Unicredit\IGFS_CG_API\IgfsUtils;
+
 class SelectorTerminalInfo
 {
     public $tid;

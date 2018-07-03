@@ -7,6 +7,7 @@ use Railken\Unicredit\IGFS_CG_API\init\InitTerminalInfo;
 use Railken\Unicredit\IGFS_CG_API\Level3Info;
 use Railken\Unicredit\IGFS_CG_API\MandateInfo;
 use Railken\Unicredit\IGFS_CG_API\IgfsUtils;
+use Railken\Unicredit\IGFS_CG_API\IgfsMissingParException;
 
 class IgfsCgInit extends BaseIgfsCgInit
 {

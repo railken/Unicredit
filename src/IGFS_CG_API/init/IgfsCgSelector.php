@@ -2,8 +2,10 @@
 
 namespace Railken\Unicredit\IGFS_CG_API\init;
 
-use Railken\Unicredit\IGFS_CG_API\init\BaseIgfsCgInit;
-use Railken\Unicredit\IGFS_CG_API\init\SelectorTerminalInfo;
+use Railken\Unicredit\IGFS_CG_API\IgfsUtils;
+use Railken\Unicredit\IGFS_CG_API\IgfsMissingParException;
+use SimpleXMLElement;
+use Railken\Unicredit\IGFS_CG_API\BaseIgfsCg;
 
 class IgfsCgSelector extends BaseIgfsCgInit
 {

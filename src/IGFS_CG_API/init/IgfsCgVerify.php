@@ -6,6 +6,7 @@ use Railken\Unicredit\IGFS_CG_API\init\BaseIgfsCgInit;
 use Railken\Unicredit\IGFS_CG_API\Level3Info;
 use Railken\Unicredit\IGFS_CG_API\IgfsMissingParException;
 use Railken\Unicredit\IGFS_CG_API\IgfsUtils;
+use Exception;
 
 class IgfsCgVerify extends BaseIgfsCgInit
 {

@@ -2,6 +2,9 @@
 
 namespace Railken\Unicredit\IGFS_CG_API;
 
+use Exception;
+use DateTime;
+
 class IgfsUtils
 {
     public static function getSignature($ksig, $fields)

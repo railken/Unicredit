@@ -4,6 +4,7 @@ namespace Railken\Unicredit\IGFS_CG_API;
 
 use Railken\Unicredit\IGFS_CG_API\IgfsUtils;
 use SimpleXMLElement;
+use Exception;
 
 abstract class BaseIgfsCg
 {
@@ -192,7 +193,7 @@ abstract class BaseIgfsCg
             // System.out.println(request);
             $response = $this->post($url, $request);
             // System.out.println(response);
-        } catch (IOException $e) {
+        } catch (Exception $e) {
             throw $e;
         }
         if ($response == null) {
@@ -320,7 +321,7 @@ abstract class BaseIgfsCg
 
         try {
             $mapResponse = $this->process($url);
-        } catch (IOException $e) {
+        } catch (Exception $e) {
             throw $e;
         }
         if ($mapResponse == null) {

@@ -3,6 +3,8 @@
 namespace Railken\Unicredit\IGFS_CG_API\mpi;
 
 use Railken\Unicredit\IGFS_CG_API\mpi\BaseIgfsCgMpi;
+use Railken\Unicredit\IGFS_CG_API\IgfsUtils;
+use Railken\Unicredit\IGFS_CG_API\IgfsMissingParException;
 
 class IgfsCgMpiEnroll extends BaseIgfsCgMpi
 {

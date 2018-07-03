@@ -2,6 +2,8 @@
 
 namespace Railken\Unicredit\IGFS_CG_API;
 
+use SimpleXMLElement;
+
 class Level3InfoProduct
 {
     public $productCode;

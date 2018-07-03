@@ -3,6 +3,7 @@
 namespace Railken\Unicredit\IGFS_CG_API;
 
 use Railken\Unicredit\IGFS_CG_API\Level3InfoProduct;
+use SimpleXMLElement;
 
 class Level3Info
 {

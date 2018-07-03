@@ -3,6 +3,8 @@
 namespace Railken\Unicredit\IGFS_CG_API\mpi;
 
 use Railken\Unicredit\IGFS_CG_API\BaseIgfsCg;
+use Railken\Unicredit\IGFS_CG_API\IgfsUtils;
+use Railken\Unicredit\IGFS_CG_API\IgfsMissingParException;
 
 abstract class BaseIgfsCgMpi extends BaseIgfsCg
 {

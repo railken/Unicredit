@@ -4,6 +4,7 @@ namespace Railken\Unicredit\IGFS_CG_API\tran;
 
 use Railken\Unicredit\IGFS_CG_API\BaseIgfsCg;
 use Railken\Unicredit\IGFS_CG_API\IgfsUtils;
+use Railken\Unicredit\IGFS_CG_API\IgfsMissingParException;
 
 abstract class BaseIgfsCgTran extends BaseIgfsCg
 {
