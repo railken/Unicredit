@@ -119,21 +119,20 @@ class Unicredit
 
         $response = new Bag();
 
-        if ($verify->paymentID !== null) {
-            $response->ok = true;
-            $response->status = 'ok';
-            $response->payment_id = $verify->paymentID;
-            $response->transaction_id = $verify->tranID;
-
-            return $response;
-        }
-
-        if ($verify->error !== null) {
+        if (!empty($verify->error) && $verify->error) {
             $response->ok = false;
             $response->status = 'ko';
             $response->error = new Bag();
             $response->error->code = $verify->error;
             $response->error->description = $verify->errorDesc;
+            return $response;
+        }
+
+        if (!empty($verify->paymentID)) {
+            $response->ok = true;
+            $response->status = 'ok';
+            $response->payment_id = $verify->paymentID;
+            $response->transaction_id = $verify->tranID;
             return $response;
         }
     }
