@@ -6,8 +6,48 @@ use duncan3dc\Laravel\Dusk;
 use donatj\MockWebServer\MockWebServer;
 
 class BasicTest extends TestCase
-{
-    public function getUnicredit($server_url)
+{   
+
+    /**
+     * @var MockWebServer
+     */
+    public $server;
+
+    /**
+     * Setup
+     */
+    public function setUp()
+    {
+        $this->server = new MockWebServer;
+        $this->server->start();
+
+        $this->unicredit = $this->getUnicredit();
+    }
+
+    /**
+     * Retrieve server url
+     *
+     * @return string
+     */
+    public function getServerUrl()
+    {
+        return $this->server->getServerRoot();
+    }
+
+    /** 
+     * Generate a new order id
+     *
+     * @return int
+     */
+    public function generateNewOrderId()
+    {
+        return md5(time());
+    }
+
+    /**
+     * Create a new instance of Unicredit
+     */
+    public function getUnicredit()
     {
         return new Unicredit([
             'terminal_id' => 'UNI_ECOM',
@@ -15,31 +55,18 @@ class BasicTest extends TestCase
             'currency' => 'EUR',
             'lang' => 'IT',
             'base_url' => 'https://testuni.netsw.it',
-            'verify_url' => $server_url . '/verify',
-            'error_url' => $server_url . '/erroy'
+            'verify_url' => $this->getServerUrl() . '/verify',
+            'error_url' => $this->getServerUrl() . '/erroy'
         ]);
     }
 
-    public function testCheckout()
+    /**
+     * Continue the action of payments 
+     *
+     * @param Dusk $dusk
+     */
+    public function continueToVerify(Dusk $dusk)
     {
-        $server = new MockWebServer;
-        $server->start();
-
-        $server_url = $server->getServerRoot();
-
-
-        $uc = $this->getUnicredit($server_url);
-
-        $order_id = md5(time());
-
-        $response = $uc->payment($order_id, 'email@customer.com', 10);
-        $transaction_id = $response->transaction_id;
-
-        $this->assertEquals(20, strlen($transaction_id));
-
-
-        $dusk = new Dusk;
-        $dusk->visit($response->redirect_url);
         $dusk->waitFor('#continue');
         $dusk->waitFor('#PAN');
         $dusk->value('#ACCNTFIRSTNAME', 'Mario');
@@ -51,18 +78,38 @@ class BasicTest extends TestCase
 
         $response = $dusk->click('#continue');
 
-        // $response->getDriver()->takeScreenshot("test.png");
+        $response->getDriver()->takeScreenshot("test.png");
 
         $dusk->waitFor('#confirm');
         $dusk->click('#confirm');
 
-
         $dusk->pause(5000);
+    }
 
-        $dusk->assertUrlIs($server_url . "/verify");
+    public function testCheckout()
+    {
+        $order_id = $this->generateNewOrderId();
 
-        $response = $uc->verify($order_id, $transaction_id);
+        $response = $this->unicredit->payment($order_id, 'email@customer.com', 10);
+        $transaction_id = $response->transaction_id;
+        $this->assertEquals(20, strlen($transaction_id));
 
+        $dusk = new Dusk;
+        $dusk->visit($response->redirect_url);
+        $this->continueToVerify($dusk);
+        $dusk->assertUrlIs($this->getServerUrl() . "/verify");
+
+        $response = $this->unicredit->verify("wrong", $transaction_id);
+        $this->assertEquals(false, $response->ok);
+        $this->assertEquals(1, $response->error->code);
+        $this->assertEquals("TRACK ID NON VALIDO ", $response->error->description);
+
+        $response = $this->unicredit->verify($order_id, "wrong");
+        $this->assertEquals(false, $response->ok);
+        $this->assertEquals(1, $response->error->code);
+        $this->assertEquals("CAMPO PAYMENT ID NON VALIDO", $response->error->description);
+
+        $response = $this->unicredit->verify($order_id, $transaction_id);
         $this->assertEquals(true, $response->ok);
     }
 }
